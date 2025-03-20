@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paneles Flotantes de Precios</title>
+
+    <!-- Enlace a Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style>
+ @keyframes scrollBanner {
+    0% {
+        transform: translateX(0); /* Comienza en su posición inicial dentro de la pantalla */
+    }
+    50% {
+        transform: translateX(-100%); /* Mueve el texto completamente hacia la izquierda */
+    }
+    100% {
+        transform: translateX(0); /* Vuelve al centro de la pantalla */
+    }
+}
+
+@keyframes rotateImage {
+            0% {
+                transform: rotate(0deg); /* Inicia en 0 grados */
+            }
+            100% {
+                transform: rotate(360deg); /* Rota completamente en 360 grados */
+            }
+        }
+
+/* Estilo del banner con animación */
+.offer-banner {
+    background-color: #ff9d00; /* Color amarillo, permanente */
+    color: white; /* Color del texto, permanente */
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9998; /* Asegura que esté encima de otros elementos */
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden; /* Oculta cualquier contenido que se salga del contenedor */
+    display: flex; /* Flexbox para centrar el texto */
+    justify-content: center; /* Centra el texto horizontalmente */
+}
+.offer-banner span {
+    display: inline-block;
+    animation: scrollBanner 100s linear infinite; /* Aplica la animación */
+}
+
+        /* Contenedor de la imagen dentro del banner */
+        .offer-banner img {
+            width: 50px; /* Tamaño de la imagen */
+            height: auto;
+            margin-left: 10px;
+            animation: rotateImage 100s linear infinite; /* Animación de rotación */
+        }
+
+.floating-panels-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: start;
+            gap: 20px; /* Espacio entre los paneles */
+            overflow-x: auto; /* Permite desplazamiento horizontal */
+            white-space: nowrap; /* Los paneles se colocan en una sola fila */
+            max-width: 100%; /* Ajuste automático al ancho de la ventana */
+            padding: 10px 0; /* Un poco de espacio superior e inferior */
+            width: 100%;
+        }
+
+        /* Estilo de los paneles flotantes */
+        .floating-panel {
+            background-color: rgb(226, 231, 230); /* Fondo oscuro semi-transparente */
+            color: rgb(22, 59, 30);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.918);
+            width: 250px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0; /* Evita que los paneles se encojan al ajustar el tamaño de la ventana */
+        }  
+        /* Estilo de los precios */
+        .floating-panel .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000000; /* Color dorado */
+        }
+
+        /* Imagen dentro del panel */
+        .floating-panel img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        /* Botón de contacto */
+        .contact-btn {
+            background-color: #28a745;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .contact-btn:hover {
+            background-color: #479759;
+        }
+
+        /* Estilo del botón para volver al inicio */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 100px;
+            background-color: #3ce7676c;
+            border: none;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 9999;
+        } /* Estilo del encabezado con subrayado amarillo */
+        .offer-banner {
+            background-color: #ff9d00; /* Color amarillo */
+            color: white;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9998; /* Asegura que esté encima de otros elementos */
+        }   .header-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #ec9100e3;
+            margin-top: 50px; /* Espacio para no tapar la línea amarilla */
+            margin-bottom: 30px;
+            text-decoration: underline; /* Subrayado */
+            text-decoration-color: #ffaf04f5; /* Color amarillo para el subrayado */
+        } .sidebar {
+            position: fixed;
+            left: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background: #343a40;
+            padding-top: 20px;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: #5179a1;
+        }
+
+        .open-btn {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            background: #2b884181;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: white;
+        } .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+        .whatsapp-float img {
+            width: 25px;
+            margin-right: 10px;
+        }
+        /* Contenedor principal para permitir desplazamiento horizontal */
+     
+
+        /* Contenedor principal para permitir desplazamiento horizontal */
+    </style>
+</head>
+
+<body> 
+  
+    <a href="#"></a>
+    <br><button class="open-btn" onclick="openNav()">☰ 𝕸𝖊𝖓𝖚</button><br>
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#">  💎𝐋𝐔𝐌𝐈𝐋 𝐁𝐀𝐑𝐁𝐄𝐑💎 </a>
+            <a href=""></a>
+        <a href="Oster.html"> 𝐯𝐨𝐥𝐯𝐞𝐫</a>
+    </div>
+<br>
+    <!-- Contenedor principal para los paneles flotantes -->
+    <div class="floating-panels-container">
+        <!-- Panel 1 - Precio 1 -->
+        <div class="floating-panel">
+            <img src=" 165175-800-auto.webp" alt="Imagen 1">
+            <h4> licuadora Oster</h4>
+            <p>Sale</p>
+            <div class="price">P</div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+
+        <!-- Panel 2 - Precio 2 -->
+        <div class="floating-panel">
+            <img src=" 352741_oster_batidora_2.jpg" alt="Imagen 2">
+            <h4>BATIDORA OSTER </h4>
+            <p>Solo Hoy</p>
+            <div class="price"></div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+
+        <!-- Panel 3 - Precio 3 -->
+        <div class="floating-panel">
+            <img src="BLSTKAG-BPB-2.webp " alt="Imagen 3">
+            <h4>LICUADORA OSTER</h4>
+            <p>¡No te lo pierdas!</p>
+            <div class="price"></div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+
+        <!-- Panel 4 - Precio 4 -->
+        <div class="floating-panel">
+            <img src="c146a8ca-aff7-4edc-b50d-1e5d0433756e___6668245d1bdbccd5ad1778dcbc0a034e.webp " alt="Imagen 4">
+            <h4>olla freidora </h4>
+            <p>¡Consíguelo Ya!</p>
+            <div class="price"></div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+
+        <!-- Panel 5 - Precio 5 -->
+        <div class="floating-panel">
+            <img src=" FPSTJE317R-1.webp " alt="Imagen 5">
+            <h4> EXTRACTORA OSTER</h4>
+            <p>Solo Hoy</p>
+            <div class="price"></div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+
+        <!-- Panel 6 - Precio 6 -->
+        <div class="floating-panel">
+            <img src=" CKSTRC7030S-053-ATF-1.webp" alt="Imagen 6">
+            <h4>OLLA ROCERA OSTER </h4>
+            <p>Solo Hoy</p>
+            <div class="price"></div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+
+        <!-- Panel 7 - Precio 7 -->
+        <div class="floating-panel">
+            <img src="Olla_arrocera_1.5L_BronKitchen_olla_arrocera_olla_arrocera_oster_olla_arrocera_pequena_olla_arrocera_electrica_olla_arrocera_black_and_decker_olla_arrocera_universal_olla_arrocera_min_bf366.webp " alt="Imagen 7">
+            <h4> OLLA ROCERA OSTER </h4>
+            <p>Solo Hoy</p>
+            <div class="price"></div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+
+        <!-- Panel 8 - Precio 8 -->
+        <div class="floating-panel">
+            <img src="" alt="Imagen 8">
+            <h4> </h4>
+            <p>¡No te lo pierdas!</p>
+            <div class="price"></div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+
+        <!-- Panel 9 - Precio 9 -->
+        <div class="floating-panel">
+            <img src="" alt="Imagen 9">
+            <h4></h4>
+            <p>¡Consíguelo Ya!</p>
+            <div class="price"></div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+
+        <!-- Panel 10 - Precio 10 -->
+        <div class="floating-panel">
+            <img src=" " alt="Imagen 10">
+            <h4> </h4>
+            <p>Solo Hoy</p>
+            <div class="price"></div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+
+        <!-- Panel 11 - Precio 11 -->
+        <div class="floating-panel">
+            <img src="" alt="Imagen 11">
+            <h4> </h4>
+            <p>¡No te lo pierdas!</p>
+            <div class="price"></div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+
+        <!-- Panel 12 - Precio 12 -->
+        <div class="floating-panel">
+            <img src="" alt="Imagen 12">
+            <h4> </h4>
+            nombre : Solo Hoy
+            <div class="price"></div>
+            <a href="https://wa.me/986837976?text=Hola,%20quiero%20información%20sobre%20el%20Producto:%20%20" target="_blank" class="contact-btn">¡Más Información!</a>
+
+        </div>
+    </div>
+
+     
+    <a href="https://wa.me/986837976" class="whatsapp-float">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        ¿Te ayudamos en algo?
+    </a>
+ <script>
+        function openNav() {
+            document.getElementById("sidebar").style.left = "0";
+        }
+
+        function closeNav() {
+            document.getElementById("sidebar").style.left = "-250px";
+        }
+    </script>
+    <!-- Enlace a Bootstrap JS (incluye dependencias de Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybJr6lJDNXWDRdR2lH0o1TXJ24mvL4jI93K5jtgf65r6p1Bz9" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-cuXjpe5u0rpNNlJ3kItJ5zHlAp7o3l34+z4jz6GMxVVnCwXlRYwD2b2x5gU8m9lg" crossorigin="anonymous"></script>
+</body>
+</html>
